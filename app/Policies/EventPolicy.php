@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Person;
+use App\Models\Event;
 use App\Models\User;
 
-class PersonPolicy
+class EventPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -18,9 +18,9 @@ class PersonPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Person $person): bool
+    public function view(User $user, Event $event): bool
     {
-        return $user->hasTeamPermission($person->team, 'read');
+        return $user->hasTeamPermission($event->team, 'read');
     }
 
     /**
@@ -34,17 +34,17 @@ class PersonPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Person $person): bool
+    public function update(User $user, Event $event): bool
     {
-        return $user->hasTeamPermission($person->team, 'update');
+        return $user->hasTeamPermission($event->team, 'update');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Person $person): bool
+    public function delete(User $user, Event $event): bool
     {
-        return $user->hasTeamPermission($person->team, 'delete');
+        return $user->hasTeamPermission($event->team, 'delete');
     }
 
     /**
@@ -58,9 +58,9 @@ class PersonPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Person $person): bool
+    public function restore(User $user, Event $event): bool
     {
-        return $user->hasTeamPermission($person->team, 'delete');
+        return $user->hasTeamPermission($event->team, 'delete');
     }
 
     /**
@@ -74,9 +74,9 @@ class PersonPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Person $person): bool
+    public function forceDelete(User $user, Event $event): bool
     {
-        return $user->hasTeamPermission($person->team, 'forceDelete');
+        return $user->hasTeamPermission($event->team, 'forceDelete');
     }
 
     /**

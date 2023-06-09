@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Person;
+use App\Models\Event;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Person>
+ * @extends Factory<Event>
  */
-class PersonFactory extends Factory
+class EventFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,9 +18,7 @@ class PersonFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
-            'email' => $this->faker->unique()->email,
-            'phone' => $this->faker->phoneNumber,
+            'name' => $this->faker->word,
         ];
     }
 }

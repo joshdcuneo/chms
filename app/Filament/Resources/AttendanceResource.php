@@ -2,21 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PersonResource\Pages;
-use App\Filament\Resources\PersonResource\RelationManagers;
-use App\Models\Person;
+use App\Filament\Resources\AttendanceResource\Pages;
+use App\Filament\Resources\AttendanceResource\RelationManagers;
+use App\Models\Attendance;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PersonResource extends Resource
+class AttendanceResource extends Resource
 {
-    protected static ?string $model = Person::class;
+    protected static ?string $model = Attendance::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -27,15 +26,12 @@ class PersonResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->maxLength(255),
+                Forms\Components\Select::make('person_id')
+                    ->relationship('person', 'name')
+                    ->required(),
+                Forms\Components\Select::make('event_id')
+                    ->relationship('event', 'name')
+                    ->required(),
             ]);
     }
 
@@ -43,9 +39,8 @@ class PersonResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('phone'),
+                Tables\Columns\TextColumn::make('person.name'),
+                Tables\Columns\TextColumn::make('event.name'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -71,10 +66,10 @@ class PersonResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPeople::route('/'),
-            'create' => Pages\CreatePerson::route('/create'),
-            'view' => Pages\ViewPerson::route('/{record}'),
-            'edit' => Pages\EditPerson::route('/{record}/edit'),
+            'index' => Pages\ListAttendances::route('/'),
+            'create' => Pages\CreateAttendance::route('/create'),
+            'view' => Pages\ViewAttendance::route('/{record}'),
+            'edit' => Pages\EditAttendance::route('/{record}/edit'),
         ];
     }
 
@@ -88,13 +83,6 @@ class PersonResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['id', 'name', 'email', 'phone'];
-    }
-
-    public static function getGlobalSearchResultDetails(Person|Model $record): array
-    {
-        return [
-            'Email' => $record->email,
-        ];
+        return ['person.id', 'person.name', 'event.id', 'event.name'];
     }
 }

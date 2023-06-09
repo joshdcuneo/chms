@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Person extends TeamOwnedModel
+
+class Event extends TeamOwnedModel
 {
     use HasFactory;
     use HasUlids;
@@ -22,8 +23,6 @@ class Person extends TeamOwnedModel
      */
     protected $fillable = [
         'name',
-        'email',
-        'phone',
         'team_id',
     ];
 
@@ -32,8 +31,8 @@ class Person extends TeamOwnedModel
         return $this->hasMany(Attendance::class);
     }
 
-    public function attendedEvents(): HasManyThrough
+    public function attendingPeople(): HasManyThrough
     {
-        return $this->hasManyThrough(Event::class, Attendance::class);
+        return $this->hasManyThrough(Person::class, Attendance::class);
     }
 }

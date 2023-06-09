@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Person;
+use App\Models\Attendance;
 use App\Models\User;
 
-class PersonPolicy
+class AttendancePolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -18,9 +18,9 @@ class PersonPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Person $person): bool
+    public function view(User $user, Attendance $attendance): bool
     {
-        return $user->hasTeamPermission($person->team, 'read');
+        return $user->hasTeamPermission($attendance->team, 'read');
     }
 
     /**
@@ -34,17 +34,17 @@ class PersonPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Person $person): bool
+    public function update(User $user, Attendance $attendance): bool
     {
-        return $user->hasTeamPermission($person->team, 'update');
+        return $user->hasTeamPermission($attendance->team, 'update');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Person $person): bool
+    public function delete(User $user, Attendance $attendance): bool
     {
-        return $user->hasTeamPermission($person->team, 'delete');
+        return $user->hasTeamPermission($attendance->team, 'delete');
     }
 
     /**
@@ -58,9 +58,9 @@ class PersonPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Person $person): bool
+    public function restore(User $user, Attendance $attendance): bool
     {
-        return $user->hasTeamPermission($person->team, 'delete');
+        return $user->hasTeamPermission($attendance->team, 'delete');
     }
 
     /**
@@ -74,9 +74,9 @@ class PersonPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Person $person): bool
+    public function forceDelete(User $user, Attendance $attendance): bool
     {
-        return $user->hasTeamPermission($person->team, 'forceDelete');
+        return $user->hasTeamPermission($attendance->team, 'forceDelete');
     }
 
     /**
