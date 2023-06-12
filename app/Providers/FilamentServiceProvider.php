@@ -18,7 +18,7 @@ class FilamentServiceProvider extends ServiceProvider
                 UserMenuItem::make()
                     ->label('Accounts Admin')
                     ->url(route('admin'))
-                    ->icon('heroicon-s-cog')
+                    ->icon('heroicon-s-cog'),
             ]);
         });
     }

@@ -2,14 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\TeamOwnedModel;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Attendance extends Model
 {
@@ -27,7 +22,7 @@ class Attendance extends Model
 
     public function joinsMany(Event|Person $from): BelongsToMany
     {
-        $to = match($from::class) {
+        $to = match ($from::class) {
             Event::class => Person::class,
             Person::class => Event::class
         };
