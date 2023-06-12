@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\Concerns\TeamOwnedModel;
 use App\Models\Event\EventStatus;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -32,7 +31,7 @@ class Event extends TeamOwnedModel
      */
     protected $casts = [
         'start' => 'immutable_datetime',
-        'end' => 'immutable_datetime'
+        'end' => 'immutable_datetime',
     ];
 
     public function people(): BelongsToMany

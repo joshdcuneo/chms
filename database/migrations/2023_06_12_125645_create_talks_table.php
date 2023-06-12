@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('talks', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name');
+            $table->text('description')->nullable();
             $table->foreignUlid('team_id')->constrained()->cascadeOnDelete();
-            $table->dateTime('start');
-            $table->dateTime('end');
-            $table->timestamps();
+            $table->foreignUlid('series_id')->nullable()->constrained()->restrictOnDelete();
+            $table->foreignUlid('speaker_id')->constrained('people')->restrictOnDelete();
+            $table->text('audio_file_url');
             $table->softDeletes();
+            $table->timestamps();
 
             $table->index('name');
-            $table->index('start');
-            $table->index('end');
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('talks');
     }
 };

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CoreDemographicResource\Pages;
-use App\Filament\Resources\CoreDemographicResource\RelationManagers;
-use App\Models\CoreDemographic;
+use App\Filament\Resources\SeriesResource\Pages;
+use App\Filament\Resources\SeriesResource\RelationManagers;
+use App\Models\Series;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -13,15 +13,14 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CoreDemographicResource extends Resource
+class SeriesResource extends Resource
 {
-    protected static ?string $model = CoreDemographic::class;
+    protected static ?string $model = Series::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroup = 'Teaching';
 
-    protected static ?string $navigationGroup = 'People';
-
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -34,6 +33,9 @@ class CoreDemographicResource extends Resource
                     ->maxLength(255),
                 Forms\Components\RichEditor::make('description')
                     ->columnSpanFull(),
+                Forms\Components\FileUpload::make('image_file_url')
+                    ->image()
+                    ->required(),
             ]);
     }
 
@@ -41,10 +43,12 @@ class CoreDemographicResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('people_count')
-                    ->counts('people'),
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('talks_count')
+                    ->counts('talks'),
+                Tables\Columns\TextColumn::make('studies_count')
+                    ->counts('studies'),
+
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -62,17 +66,18 @@ class CoreDemographicResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\PeopleRelationManager::class,
+            RelationManagers\TalksRelationManager::class,
+            RelationManagers\StudiesRelationManager::class
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCoreDemographics::route('/'),
-            'create' => Pages\CreateCoreDemographic::route('/create'),
-            'view' => Pages\ViewCoreDemographic::route('/{record}'),
-            'edit' => Pages\EditCoreDemographic::route('/{record}/edit'),
+            'index' => Pages\ListSeries::route('/'),
+            'create' => Pages\CreateSeries::route('/create'),
+            'view' => Pages\ViewSeries::route('/{record}'),
+            'edit' => Pages\EditSeries::route('/{record}/edit'),
         ];
     }
 

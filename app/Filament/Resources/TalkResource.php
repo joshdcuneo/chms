@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CoreDemographicResource\Pages;
-use App\Filament\Resources\CoreDemographicResource\RelationManagers;
-use App\Models\CoreDemographic;
+use App\Filament\Resources\TalkResource\Pages;
+use App\Filament\Resources\TalkResource\RelationManagers;
+use App\Models\Talk;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -13,13 +13,13 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CoreDemographicResource extends Resource
+class TalkResource extends Resource
 {
-    protected static ?string $model = CoreDemographic::class;
+    protected static ?string $model = Talk::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-microphone';
 
-    protected static ?string $navigationGroup = 'People';
+    protected static ?string $navigationGroup = 'Teaching';
 
     protected static ?int $navigationSort = 2;
 
@@ -29,11 +29,19 @@ class CoreDemographicResource extends Resource
     {
         return $form
             ->schema([
+
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\RichEditor::make('description')
-                    ->columnSpanFull(),
+                Forms\Components\Select::make('series_id')
+                    ->relationship('series', 'name'),
+                Forms\Components\Select::make('speaker_id')
+                    ->relationship('speaker', 'name')
+                    ->required(),
+                Forms\Components\Textarea::make('description'),
+                Forms\Components\FileUpload::make('audio_file_url')
+                    ->acceptedFileTypes(['application/*'])
+                    ->required(),
             ]);
     }
 
@@ -41,10 +49,10 @@ class CoreDemographicResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('people_count')
-                    ->counts('people'),
+
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('series.name'),
+                Tables\Columns\TextColumn::make('speaker.name'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -62,17 +70,17 @@ class CoreDemographicResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\PeopleRelationManager::class,
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCoreDemographics::route('/'),
-            'create' => Pages\CreateCoreDemographic::route('/create'),
-            'view' => Pages\ViewCoreDemographic::route('/{record}'),
-            'edit' => Pages\EditCoreDemographic::route('/{record}/edit'),
+            'index' => Pages\ListTalks::route('/'),
+            'create' => Pages\CreateTalk::route('/create'),
+            'view' => Pages\ViewTalk::route('/{record}'),
+            'edit' => Pages\EditTalk::route('/{record}/edit'),
         ];
     }
 

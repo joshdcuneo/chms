@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CoreDemographicResource\Pages;
-use App\Filament\Resources\CoreDemographicResource\RelationManagers;
-use App\Models\CoreDemographic;
+use App\Filament\Resources\StudyResource\Pages;
+use App\Filament\Resources\StudyResource\RelationManagers;
+use App\Models\Study;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -13,15 +13,15 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CoreDemographicResource extends Resource
+class StudyResource extends Resource
 {
-    protected static ?string $model = CoreDemographic::class;
+    protected static ?string $model = Study::class;
 
-    protected static ?string $navigationIcon = 'heroicon-s-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
-    protected static ?string $navigationGroup = 'People';
+    protected static ?string $navigationGroup = 'Teaching';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -29,11 +29,19 @@ class CoreDemographicResource extends Resource
     {
         return $form
             ->schema([
+
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\RichEditor::make('description')
-                    ->columnSpanFull(),
+                Forms\Components\Select::make('series_id')
+                    ->relationship('series', 'name'),
+                Forms\Components\Select::make('author_id')
+                    ->relationship('author', 'name')
+                    ->required(),
+                Forms\Components\Textarea::make('description'),
+                Forms\Components\FileUpload::make('document_file_url')
+                    ->acceptedFileTypes(['application/pdf'])
+                    ->required(),
             ]);
     }
 
@@ -41,10 +49,10 @@ class CoreDemographicResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('people_count')
-                    ->counts('people'),
+
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('series.name'),
+                Tables\Columns\TextColumn::make('author.name'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -62,17 +70,17 @@ class CoreDemographicResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\PeopleRelationManager::class,
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCoreDemographics::route('/'),
-            'create' => Pages\CreateCoreDemographic::route('/create'),
-            'view' => Pages\ViewCoreDemographic::route('/{record}'),
-            'edit' => Pages\EditCoreDemographic::route('/{record}/edit'),
+            'index' => Pages\ListStudies::route('/'),
+            'create' => Pages\CreateStudy::route('/create'),
+            'view' => Pages\ViewStudy::route('/{record}'),
+            'edit' => Pages\EditStudy::route('/{record}/edit'),
         ];
     }
 

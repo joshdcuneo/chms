@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\EventResource\Pages;
+namespace App\Filament\Resources\SeriesResource\Pages;
 
-use App\Filament\Resources\EventResource;
+use App\Filament\Resources\SeriesResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditEvent extends EditRecord
+class EditSeries extends EditRecord
 {
-    protected static string $resource = EventResource::class;
+    protected static string $resource = SeriesResource::class;
 
     protected function getActions(): array
     {

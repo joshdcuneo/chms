@@ -22,6 +22,9 @@ class FilamentServiceProvider extends ServiceProvider
                 NavigationGroup::make()
                     ->label('Events')
                     ->collapsed(),
+                NavigationGroup::make()
+                    ->label('Teaching')
+                    ->collapsed()
             ]);
 
             Filament::registerUserMenuItems([

@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\EventSchedule;
+use App\Models\Talk;
 use App\Models\User;
 
-class EventSchedulePolicy
+class TalkPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -18,9 +18,9 @@ class EventSchedulePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, EventSchedule $eventSchedule): bool
+    public function view(User $user, Talk $talk): bool
     {
-        return $user->hasTeamPermission($eventSchedule->team, 'read');
+        return $user->hasTeamPermission($talk->team, 'read');
     }
 
     /**
@@ -34,17 +34,17 @@ class EventSchedulePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, EventSchedule $eventSchedule): bool
+    public function update(User $user, Talk $talk): bool
     {
-        return $user->hasTeamPermission($eventSchedule->team, 'update');
+        return $user->hasTeamPermission($talk->team, 'update');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, EventSchedule $eventSchedule): bool
+    public function delete(User $user, Talk $talk): bool
     {
-        return $user->hasTeamPermission($eventSchedule->team, 'delete');
+        return $user->hasTeamPermission($talk->team, 'delete');
     }
 
     /**
@@ -58,9 +58,9 @@ class EventSchedulePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, EventSchedule $eventSchedule): bool
+    public function restore(User $user, Talk $talk): bool
     {
-        return $user->hasTeamPermission($eventSchedule->team, 'delete');
+        return $user->hasTeamPermission($talk->team, 'delete');
     }
 
     /**
@@ -74,9 +74,9 @@ class EventSchedulePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, EventSchedule $eventSchedule): bool
+    public function forceDelete(User $user, Talk $talk): bool
     {
-        return $user->hasTeamPermission($eventSchedule->team, 'forceDelete');
+        return $user->hasTeamPermission($talk->team, 'forceDelete');
     }
 
     /**

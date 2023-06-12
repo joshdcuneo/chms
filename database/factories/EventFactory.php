@@ -26,7 +26,7 @@ class EventFactory extends Factory
                     $attrs['start']->addHour(),
                     $attrs['start']->addDay()
                 );
-            }
+            },
         ];
     }
 }

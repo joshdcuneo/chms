@@ -53,19 +53,19 @@ class EventResource extends Resource
                     ->form([
                         Forms\Components\Select::make('status')
                             ->options(EventStatus::options())
-                            ->default(EventStatus::Upcoming->value)
+                            ->default(EventStatus::Upcoming->value),
                     ])
                     ->query(function (Builder $query, array $data) {
                         if ($data['status']) {
                             $query->status(EventStatus::from($data['status']));
                         }
                     })->indicateUsing(function (array $data): ?string {
-                        if (!$data['status']) {
+                        if (! $data['status']) {
                             return null;
                         }
 
-                        return 'Status: ' . $data['status'];
-                    })
+                        return 'Status: '.$data['status'];
+                    }),
 
             ])
             ->actions([
@@ -74,7 +74,6 @@ class EventResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
-                Tables\Actions\ForceDeleteBulkAction::make(),
                 Tables\Actions\RestoreBulkAction::make(),
             ]);
     }

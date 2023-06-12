@@ -11,18 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('series', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name');
+            $table->text('description')->nullable();
             $table->foreignUlid('team_id')->constrained()->cascadeOnDelete();
-            $table->dateTime('start');
-            $table->dateTime('end');
-            $table->timestamps();
+            $table->text('image_file_url');
             $table->softDeletes();
+            $table->timestamps();
 
             $table->index('name');
-            $table->index('start');
-            $table->index('end');
         });
     }
 
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('series');
     }
 };

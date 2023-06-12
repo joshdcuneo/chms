@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class EventSchedule extends TeamOwnedModel
+class Series extends TeamOwnedModel
 {
     use HasFactory;
     use HasUlids;
@@ -28,12 +28,16 @@ class EventSchedule extends TeamOwnedModel
      * @var array<string, string>
      */
     protected $casts = [
-        'start' => 'immutable_datetime',
-        'end' => 'immutable_datetime'
+        'image_file' => 'json',
     ];
 
-    public function events(): HasMany
+    public function talks(): HasMany
     {
-        return $this->hasMany(Event::class);
+        return $this->hasMany(Talk::class);
+    }
+
+    public function studies(): HasMany
+    {
+        return $this->hasMany(Study::class);
     }
 }
