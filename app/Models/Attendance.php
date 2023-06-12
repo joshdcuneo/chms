@@ -6,14 +6,14 @@ use App\Models\Concerns\TeamOwnedModel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Attendance extends TeamOwnedModel
+class Attendance extends Model
 {
     use HasFactory;
-    use HasUlids;
-    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -21,25 +21,18 @@ class Attendance extends TeamOwnedModel
      * @var array<int, string>
      */
     protected $fillable = [
-        'team_id',
         'person_id',
         'event_id',
     ];
 
-    public function person(): BelongsTo
+    public function joinsMany(Event|Person $from): BelongsToMany
     {
-        return $this->belongsTo(Person::class);
-    }
+        $to = match($from::class) {
+            Event::class => Person::class,
+            Person::class => Event::class
+        };
 
-    public function event(): BelongsTo
-    {
-        return $this->belongsTo(Event::class);
-    }
-
-    public function name(): Attribute
-    {
-        return new Attribute(
-            get: fn()=> $this->person->name.' - '.$this->event->name,
-        );
+        return $from->belongsToMany($to, $this->getTable())
+            ->withTimestamps();
     }
 }

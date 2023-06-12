@@ -13,6 +13,6 @@ class CurrentTeamScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->where('team_id', '=', auth()->user()->currentTeam->id);
+        $builder->where($model->getTable() . '.team_id', '=', auth()->user()->currentTeam->id);
     }
 }

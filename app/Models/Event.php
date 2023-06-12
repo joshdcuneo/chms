@@ -5,10 +5,10 @@ namespace App\Models;
 use App\Models\Concerns\TeamOwnedModel;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 
 class Event extends TeamOwnedModel
 {
@@ -31,8 +31,8 @@ class Event extends TeamOwnedModel
         return $this->hasMany(Attendance::class);
     }
 
-    public function attendingPeople(): HasManyThrough
+    public function people(): BelongsToMany
     {
-        return $this->hasManyThrough(Person::class, Attendance::class);
+        return app(Attendance::class)->joinsMany($this);
     }
 }

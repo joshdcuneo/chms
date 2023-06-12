@@ -33,21 +33,12 @@ class DatabaseSeeder extends Seeder
             ->count(1000)
             ->createQuietly();
 
-        $events = Event::factory()
-            ->for($me->currentTeam)
-            ->count(200)
-            ->createQuietly();
-
-        Attendance::factory()
-            ->for($me->currentTeam)
-            ->state(new Sequence(
-                fn(Sequence $sequence) => [
-                    'event_id' => $events->random(),
-                    'person_id' => $people->random(),
-                ],
-            ))
-            ->count(10000)
-            ->createQuietly();
-
+        collect()->range(1, 50)->each(function () use ($people, $me) {
+            $attendees = $people->random(120);
+            Event::factory()
+                ->for($me->currentTeam)
+                ->hasAttached($attendees)
+                ->createOneQuietly();
+        });
     }
 }

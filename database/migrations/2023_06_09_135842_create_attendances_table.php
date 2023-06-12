@@ -12,11 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attendances', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->foreignUlid('team_id')->constrained()->cascadeOnDelete();
             $table->foreignUlid('person_id')->constrained()->nullOnDelete();
             $table->foreignUlid('event_id')->constrained()->cascadeOnDelete();
-            $table->softDeletes();
             $table->timestamps();
         });
     }

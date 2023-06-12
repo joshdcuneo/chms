@@ -18,6 +18,7 @@ abstract class TeamOwnedModel extends Model
      * @var array<int, string>
      */
     protected $with = ['team'];
+
     protected static function boot(): void
     {
         parent::boot();
@@ -26,11 +27,11 @@ abstract class TeamOwnedModel extends Model
             $model->team_id = auth()->user()->currentTeam->id;
         });
 
-        static::updating(function(TeamOwnedModel $model): void {
+        static::updating(function (TeamOwnedModel $model): void {
             $model->mustBeOwnedByCurrentTeam();
         });
 
-        static::deleting(function(TeamOwnedModel $model): void {
+        static::deleting(function (TeamOwnedModel $model): void {
             $model->mustBeOwnedByCurrentTeam();
         });
 
@@ -39,7 +40,7 @@ abstract class TeamOwnedModel extends Model
 
     public function mustBeOwnedByCurrentTeam(): void
     {
-        if($this->team_id !== auth()->user()->currentTeam->id) {
+        if ($this->team_id !== auth()->user()->currentTeam->id) {
             abort(Response::HTTP_FORBIDDEN);
         }
     }
