@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Attendance;
+use App\Models\Demographic;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Attendance>
+ * @extends Factory<Demographic>
  */
-class AttendanceFactory extends Factory
+class DemographicFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,6 +18,8 @@ class AttendanceFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => $this->faker->word,
+            'description' => $this->faker->sentence
         ];
     }
 }

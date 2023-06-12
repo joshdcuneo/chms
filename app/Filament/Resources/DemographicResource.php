@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EventResource\Pages;
-use App\Filament\Resources\EventResource\RelationManagers;
-use App\Models\Event;
+use App\Filament\Resources\DemographicResource\Pages;
+use App\Models\Demographic;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -12,14 +11,16 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\DemographicResource\RelationManagers;
 
-class EventResource extends Resource
+class DemographicResource extends Resource
 {
-    protected static ?string $model = Event::class;
+    protected static ?string $model = Demographic::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-calendar';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?string $recordTitleAttribute = 'name';
+
 
     public static function form(Form $form): Form
     {
@@ -28,6 +29,8 @@ class EventResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\RichEditor::make('description')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -37,8 +40,10 @@ class EventResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('attendances_count')
-                    ->counts('attendances'),
+                Tables\Columns\TextColumn::make('main_people_count')
+                    ->counts('mainPeople'),
+                Tables\Columns\TextColumn::make('other_people_count')
+                    ->counts('otherPeople'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -57,23 +62,19 @@ class EventResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\AttendingPeopleRelationManager::class,
+            RelationManagers\MainPeopleRelationManager::class,
+            RelationManagers\OtherPeopleRelationManager::class
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEvents::route('/'),
-            'create' => Pages\CreateEvent::route('/create'),
-            'view' => Pages\ViewEvent::route('/{record}'),
-            'edit' => Pages\EditEvent::route('/{record}/edit'),
+            'index' => Pages\ListDemographics::route('/'),
+            'create' => Pages\CreateDemographic::route('/create'),
+            'view' => Pages\ViewDemographic::route('/{record}'),
+            'edit' => Pages\EditDemographic::route('/{record}/edit'),
         ];
-    }
-
-    public static function getGloballySearchableAttributes(): array
-    {
-        return ['id', 'name'];
     }
 
     public static function getEloquentQuery(): Builder

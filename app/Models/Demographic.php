@@ -7,14 +7,13 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Event extends TeamOwnedModel
+class Demographic extends TeamOwnedModel
 {
     use HasFactory;
-    use HasUlids;
     use SoftDeletes;
+    use HasUlids;
 
     /**
      * The attributes that are mass assignable.
@@ -23,16 +22,17 @@ class Event extends TeamOwnedModel
      */
     protected $fillable = [
         'name',
+        'description',
         'team_id',
     ];
 
-    public function attendances(): HasMany
+    public function otherPeople(): BelongsToMany
     {
-        return $this->hasMany(Attendance::class);
+        return $this->belongsToMany(Person::class);
     }
 
-    public function people(): BelongsToMany
+    public function mainPeople(): HasMany
     {
-        return app(Attendance::class)->joinsMany($this);
+        return $this->hasMany(Person::class, 'main_demographic_id');
     }
 }

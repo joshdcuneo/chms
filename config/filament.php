@@ -328,7 +328,6 @@ return [
             SubstituteBindings::class,
             DispatchServingFilamentEvent::class,
             MirrorConfigToSubpackages::class,
-            EnsureEmailIsVerified::class,
         ],
     ],
 

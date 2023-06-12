@@ -17,7 +17,7 @@ class PersonResource extends Resource
 {
     protected static ?string $model = Person::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -34,6 +34,15 @@ class PersonResource extends Resource
                 Forms\Components\TextInput::make('phone')
                     ->tel()
                     ->maxLength(255),
+                Forms\Components\Select::make('mainDemographic')
+                    ->relationship('mainDemographic', 'name')
+                    ->required()
+                    ->preload(),
+                Forms\Components\Select::make('otherDemographics')
+                    ->relationship('otherDemographics', 'name')
+                    ->multiple()
+                    ->required()
+                    ->preload(),
             ]);
     }
 
@@ -43,13 +52,15 @@ class PersonResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
+                Tables\Columns\TextColumn::make('mainDemographic.name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
+                Tables\Columns\TextColumn::make('email')
                     ->searchable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\SelectFilter::make('main_demographic')
+                    ->relationship('mainDemographic', 'name'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
