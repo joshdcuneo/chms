@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Filament\Resources\DemographicResource\Pages;
+namespace App\Filament\Resources\OtherDemographicResource\Pages;
 
-use App\Filament\Resources\DemographicResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditDemographic extends EditRecord
+class EditOtherDemographic extends EditRecord
 {
-    protected static string $resource = DemographicResource::class;
+    protected static string $resource = OtherDemographicResource::class;
 
     protected function getActions(): array
     {

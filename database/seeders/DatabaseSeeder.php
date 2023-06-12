@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\Demographic;
+use App\Models\CoreDemographic;
 use App\Models\Event;
+use App\Models\OtherDemographic;
 use App\Models\Person;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -27,33 +28,38 @@ class DatabaseSeeder extends Seeder
                 'email' => 'josh@critical.codes',
             ]);
 
-        $createDemographic = function (string $name) use ($me) {
-            return Demographic::factory()
-                ->for($me->currentTeam)
-                ->createQuietly([
-                    'name' => $name,
-                ]);
-        };
-
         $coreDemographics = collect(['Contact', 'New Person', 'Adherent', 'Member', 'Child'])
-            ->map($createDemographic);
+            ->map(function (string $name) use ($me) {
+                return CoreDemographic::factory()
+                    ->for($me->currentTeam)
+                    ->createQuietly([
+                        'name' => $name,
+                    ]);
+            });
+
         $otherDemographics = collect(['Volunteer', 'Extra Care'])
-            ->map($createDemographic);
+            ->map(function (string $name) use ($me) {
+                return OtherDemographic::factory()
+                    ->for($me->currentTeam)
+                    ->createQuietly([
+                        'name' => $name,
+                    ]);
+            });
 
-        $people = $coreDemographics->map(function (Demographic $demographic) use ($me, $otherDemographics) {
-            return Person::factory()
-                ->for($me->currentTeam)
-                ->for($demographic, 'mainDemographic')
-                ->hasAttached($otherDemographics->random(), [], 'otherDemographics')
-                ->count(200)
-                ->createQuietly();
-        })->flatten();
+        $people = Person::factory()
+            ->for($me->currentTeam)
+            ->sequence(fn () => ['core_demographic_id' => $coreDemographics->random()])
+            ->count(random_int(1000, 2000))
+            ->createQuietly();
 
-        collect()->range(1, 50)->each(function () use ($me, $people) {
-            Event::factory()
-                ->for($me->currentTeam)
-                ->hasAttached($people->random(120))
-                ->createOneQuietly();
-        });
+        $people->random(random_int(30, 80))->each(fn (Person $person) => $person->otherDemographics()->attach($otherDemographics->random()));
+
+        Event::factory()
+            ->for($me->currentTeam)
+            ->count(random_int(30, 80))
+            ->createQuietly()
+            ->each(function (Event $event) use ($people) {
+                $event->people()->attach($people->random(random_int(20, 240)));
+            });
     }
 }

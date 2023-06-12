@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Demographic;
+use App\Models\CoreDemographic;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Demographic>
+ * @extends Factory<CoreDemographic>
  */
-class DemographicFactory extends Factory
+class OtherDemographicFactory extends Factory
 {
     /**
      * Define the model's default state.

@@ -19,6 +19,10 @@ class PersonResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
+    protected static ?string $navigationGroup = 'People';
+
+    protected static ?int $navigationSort = 1;
+
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Form $form): Form
@@ -34,8 +38,8 @@ class PersonResource extends Resource
                 Forms\Components\TextInput::make('phone')
                     ->tel()
                     ->maxLength(255),
-                Forms\Components\Select::make('mainDemographic')
-                    ->relationship('mainDemographic', 'name')
+                Forms\Components\Select::make('coreDemographic')
+                    ->relationship('coreDemographic', 'name')
                     ->required()
                     ->preload(),
                 Forms\Components\Select::make('otherDemographics')
@@ -52,15 +56,15 @@ class PersonResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('mainDemographic.name')
+                Tables\Columns\TextColumn::make('coreDemographic.name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
-                Tables\Filters\SelectFilter::make('main_demographic')
-                    ->relationship('mainDemographic', 'name'),
+                Tables\Filters\SelectFilter::make('core_demographic')
+                    ->relationship('coreDemographic', 'name'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

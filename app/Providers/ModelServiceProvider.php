@@ -22,7 +22,7 @@ class ModelServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'event' => Event::class,
             'person' => Person::class,
-            'user' => User::class
+            'user' => User::class,
         ]);
     }
 }

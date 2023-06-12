@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('core_demographics', function (Blueprint $table) {
+        Schema::create('other_demographics', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name');
             $table->text('description')->nullable();
@@ -21,10 +21,6 @@ return new class extends Migration
 
             $table->index('name');
         });
-
-        Schema::table('people', function (Blueprint $table) {
-            $table->foreignUlid('core_demographic_id')->constrained('core_demographics')->restrictOnDelete();
-        });
     }
 
     /**
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('core_demographics');
+        Schema::dropIfExists('other_demographics');
     }
 };

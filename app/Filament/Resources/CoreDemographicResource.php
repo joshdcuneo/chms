@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EventResource\Pages;
-use App\Filament\Resources\EventResource\RelationManagers;
-use App\Models\Event;
-use App\Models\Event\EventStatus;
+use App\Filament\Resources\CoreDemographicResource\Pages;
+use App\Filament\Resources\CoreDemographicResource\RelationManagers;
+use App\Models\CoreDemographic;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -14,13 +13,15 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class EventResource extends Resource
+class CoreDemographicResource extends Resource
 {
-    protected static ?string $model = Event::class;
+    protected static ?string $model = CoreDemographic::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-calendar';
+    protected static ?string $navigationIcon = 'heroicon-s-user-group';
 
-    protected static ?string $navigationGroup = 'Events';
+    protected static ?string $navigationGroup = 'People';
+
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -31,10 +32,8 @@ class EventResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('start')
-                    ->required(),
-                Forms\Components\DateTimePicker::make('end')
-                    ->required(),
+                Forms\Components\RichEditor::make('description')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -49,24 +48,6 @@ class EventResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
-                Tables\Filters\Filter::make('status')
-                    ->form([
-                        Forms\Components\Select::make('status')
-                            ->options(EventStatus::options())
-                            ->default(EventStatus::Upcoming->value)
-                    ])
-                    ->query(function (Builder $query, array $data) {
-                        if ($data['status']) {
-                            $query->status(EventStatus::from($data['status']));
-                        }
-                    })->indicateUsing(function (array $data): ?string {
-                        if (!$data['status']) {
-                            return null;
-                        }
-
-                        return 'Status: ' . $data['status'];
-                    })
-
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -89,16 +70,11 @@ class EventResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEvents::route('/'),
-            'create' => Pages\CreateEvent::route('/create'),
-            'view' => Pages\ViewEvent::route('/{record}'),
-            'edit' => Pages\EditEvent::route('/{record}/edit'),
+            'index' => Pages\ListCoreDemographics::route('/'),
+            'create' => Pages\CreateCoreDemographic::route('/create'),
+            'view' => Pages\ViewCoreDemographic::route('/{record}'),
+            'edit' => Pages\EditCoreDemographic::route('/{record}/edit'),
         ];
-    }
-
-    public static function getGloballySearchableAttributes(): array
-    {
-        return ['id', 'name'];
     }
 
     public static function getEloquentQuery(): Builder

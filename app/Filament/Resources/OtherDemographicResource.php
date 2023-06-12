@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\DemographicResource\Pages;
-use App\Filament\Resources\DemographicResource\RelationManagers;
-use App\Models\Demographic;
+use App\Filament\Resources\OtherDemographicResource\Pages;
+use App\Filament\Resources\OtherDemographicResource\RelationManagers;
+use App\Models\OtherDemographic;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -13,11 +13,15 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class DemographicResource extends Resource
+class OtherDemographicResource extends Resource
 {
-    protected static ?string $model = Demographic::class;
+    protected static ?string $model = OtherDemographic::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    protected static ?string $navigationGroup = 'People';
+
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -39,10 +43,8 @@ class DemographicResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('main_people_count')
-                    ->counts('mainPeople'),
-                Tables\Columns\TextColumn::make('other_people_count')
-                    ->counts('otherPeople'),
+                Tables\Columns\TextColumn::make('people_count')
+                    ->counts('people'),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -61,18 +63,17 @@ class DemographicResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\MainPeopleRelationManager::class,
-            RelationManagers\OtherPeopleRelationManager::class,
+            RelationManagers\PeopleRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDemographics::route('/'),
-            'create' => Pages\CreateDemographic::route('/create'),
-            'view' => Pages\ViewDemographic::route('/{record}'),
-            'edit' => Pages\EditDemographic::route('/{record}/edit'),
+            'index' => Pages\ListOtherDemographics::route('/'),
+            'create' => Pages\CreateOtherDemographic::route('/create'),
+            'view' => Pages\ViewOtherDemographic::route('/{record}'),
+            'edit' => Pages\EditOtherDemographic::route('/{record}/edit'),
         ];
     }
 

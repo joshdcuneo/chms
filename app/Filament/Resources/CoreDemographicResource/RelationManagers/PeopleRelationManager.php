@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\DemographicResource\RelationManagers;
+namespace App\Filament\Resources\CoreDemographicResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -8,9 +8,9 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
 
-class OtherPeopleRelationManager extends RelationManager
+class PeopleRelationManager extends RelationManager
 {
-    protected static string $relationship = 'otherPeople';
+    protected static string $relationship = 'people';
 
     protected static ?string $recordTitleAttribute = 'name';
 

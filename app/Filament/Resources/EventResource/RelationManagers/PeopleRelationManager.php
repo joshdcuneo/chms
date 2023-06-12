@@ -6,7 +6,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
 use Filament\Tables;
 
-class AttendingPeopleRelationManager extends RelationManager
+class PeopleRelationManager extends RelationManager
 {
     protected static string $relationship = 'people';
 
@@ -22,7 +22,6 @@ class AttendingPeopleRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                // TODO how to load people?
                 Tables\Actions\AttachAction::make()
                     ->preloadRecordSelect(),
             ])

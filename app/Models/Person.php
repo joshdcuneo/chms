@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Person extends TeamOwnedModel
@@ -33,31 +32,31 @@ class Person extends TeamOwnedModel
     /**
      * @var array<int, string>
      */
-    protected $with = ['team', 'mainDemographic'];
+    protected $with = ['team', 'coreDemographic'];
 
-    public function attendances(): HasMany
-    {
-        return $this->hasMany(Attendance::class);
-    }
-
+    /**
+     * @return BelongsToMany<Event>
+     */
     public function events(): BelongsToMany
     {
-        return app(Attendance::class)->joinsMany($this);
+        return $this->belongsToMany(Event::class)
+            ->withTimestamps();
     }
 
     /**
-     * @return BelongsToMany<Demographic>
+     * @return BelongsToMany<CoreDemographic>
      */
     public function otherDemographics(): BelongsToMany
     {
-        return $this->belongsToMany(Demographic::class);
+        return $this->belongsToMany(OtherDemographic::class)
+            ->withTimestamps();
     }
 
     /**
-     * @return BelongsTo<Demographic>
+     * @return BelongsTo<CoreDemographic>
      */
-    public function mainDemographic(): BelongsTo
+    public function coreDemographic(): BelongsTo
     {
-        return $this->belongsTo(Demographic::class);
+        return $this->belongsTo(CoreDemographic::class);
     }
 }
