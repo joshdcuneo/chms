@@ -7,7 +7,6 @@ use App\Models\Demographic;
 use App\Models\Event;
 use App\Models\Person;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -32,7 +31,7 @@ class DatabaseSeeder extends Seeder
             return Demographic::factory()
                 ->for($me->currentTeam)
                 ->createQuietly([
-                    'name' => $name
+                    'name' => $name,
                 ]);
         };
 

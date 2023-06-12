@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\IsCategorizable;
 use App\Models\Concerns\TeamOwnedModel;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,13 +27,14 @@ class Person extends TeamOwnedModel
         'phone',
         'team_id',
         'category_id',
-        'demographic_id'
+        'demographic_id',
     ];
 
     /**
      * @var array<int, string>
      */
     protected $with = ['team', 'mainDemographic'];
+
     public function attendances(): HasMany
     {
         return $this->hasMany(Attendance::class);

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DemographicResource\Pages;
+use App\Filament\Resources\DemographicResource\RelationManagers;
 use App\Models\Demographic;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -11,7 +12,6 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\DemographicResource\RelationManagers;
 
 class DemographicResource extends Resource
 {
@@ -20,7 +20,6 @@ class DemographicResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?string $recordTitleAttribute = 'name';
-
 
     public static function form(Form $form): Form
     {
@@ -63,7 +62,7 @@ class DemographicResource extends Resource
     {
         return [
             RelationManagers\MainPeopleRelationManager::class,
-            RelationManagers\OtherPeopleRelationManager::class
+            RelationManagers\OtherPeopleRelationManager::class,
         ];
     }
 

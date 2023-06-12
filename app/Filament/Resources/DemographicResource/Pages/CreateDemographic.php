@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\DemographicResource\Pages;
 
 use App\Filament\Resources\DemographicResource;
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateDemographic extends CreateRecord
