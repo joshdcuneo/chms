@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->foreignUlid('team_id')->constrained()->cascadeOnDelete();
-            $table->text('image_file_url');
+            $table->text('image_file_url')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

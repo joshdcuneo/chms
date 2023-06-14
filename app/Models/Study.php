@@ -20,15 +20,12 @@ class Study extends TeamOwnedModel
      * @var array<int, string>
      */
     protected $fillable = [
+        'description',
         'name',
         'team_id',
-    ];
-
-    /**
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'document_file' => 'json',
+        'series_id',
+        'author_id',
+        'document_file_url',
     ];
 
     public function series(): BelongsTo

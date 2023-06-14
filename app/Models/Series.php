@@ -20,15 +20,10 @@ class Series extends TeamOwnedModel
      * @var array<int, string>
      */
     protected $fillable = [
+        'description',
+        'image_file_url',
         'name',
         'team_id',
-    ];
-
-    /**
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'image_file' => 'json',
     ];
 
     public function talks(): HasMany

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Concerns\TeamOwnedModel;
 use App\Models\Event\EventStatus;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -40,17 +41,22 @@ class Event extends TeamOwnedModel
             ->withTimestamps();
     }
 
-    public function status(): EventStatus
+    public function status(): Attribute
     {
-        if ($this->end->isPast()) {
-            return EventStatus::Finished;
+        return new Attribute(fn() => $this->getStatus());
+
+    }
+    public function getStatus(): EventStatus
+    {
+        if ($this->start > now()) {
+            return EventStatus::Upcoming();
         }
 
-        if ($this->start->isFuture()) {
-            return EventStatus::Upcoming;
+        if ($this->end < now()) {
+            return EventStatus::Finished();
         }
 
-        return EventStatus::Ongoing;
+        return EventStatus::Ongoing();
     }
 
     public function scopeStatus(Builder $query, EventStatus $status): Builder

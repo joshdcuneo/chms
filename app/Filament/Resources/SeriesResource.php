@@ -34,8 +34,7 @@ class SeriesResource extends Resource
                 Forms\Components\RichEditor::make('description')
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image_file_url')
-                    ->image()
-                    ->required(),
+                    ->image(),
             ]);
     }
 

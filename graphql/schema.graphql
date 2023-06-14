@@ -1,0 +1,210 @@
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+type Query {
+    "Find a single person by an identifying attribute."
+    findPerson(
+      "Search by primary key."
+      id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
+
+      "Search by email address."
+      email: String @eq @rules(apply: ["prohibits:id", "required_without:id", "email"])
+    ): Person @find
+
+    "List multiple people."
+    listPeople(
+      "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
+      name: String @where(operator: "like")
+    ): [Person!]! @paginate(defaultCount: 10)
+
+    "Find a single event by an identifying attribute."
+    findEvent(
+        "Search by primary key."
+        id: ID @eq
+    ): Event @find
+
+    "List multiple events."
+    listEvents(
+        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
+        name: String @where(operator: "like")
+    ): [Event!]! @paginate(defaultCount: 10)
+
+
+    "Find a single core demographic by an identifying attribute."
+    findCoreDemographic(
+        "Search by primary key."
+        id: ID @eq
+    ): CoreDemographic @find
+
+    "List multiple core demographics."
+    listCoreDemographics(
+        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
+        name: String @where(operator: "like")
+    ): [CoreDemographic!]! @paginate(defaultCount: 10)
+
+    "Find a single other demographic by an identifying attribute."
+    findOtherDemographic(
+        "Search by primary key."
+        id: ID @eq
+    ): OtherDemographic @find
+
+    "List multiple other demographics."
+    listOtherDemographics(
+        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
+        name: String @where(operator: "like")
+    ): [OtherDemographic!]! @paginate(defaultCount: 10)
+
+    "Find a single series by an identifying attribute."
+    findSeries(
+        "Search by primary key."
+        id: ID @eq
+    ): Series @find
+
+    "List multiple series."
+    listSeries(
+        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
+        name: String @where(operator: "like")
+    ): [Series!]! @paginate(defaultCount: 10)
+
+    "Find a single talk by an identifying attribute."
+    findTalk(
+        "Search by primary key."
+        id: ID @eq
+    ): Talk @find
+
+    "List multiple talks."
+    listTalk(
+        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
+        name: String @where(operator: "like")
+    ): [Talk!]! @paginate(defaultCount: 10)
+
+    "Find a single study by an identifying attribute."
+    findStudy(
+        "Search by primary key."
+        id: ID @eq
+    ): Study @find
+
+    "List multiple studies."
+    listStudy(
+        "Filters by name. Accepts SQL LIKE wildcards `%` and `_`."
+        name: String @where(operator: "like")
+    ): [Study!]! @paginate(defaultCount: 10)
+}
+
+type Person {
+    id: ID!
+
+    createdAt: DateTime!
+
+    updatedAt: DateTime!
+
+    name: String!
+
+    email: String!
+
+    phone: String
+
+    events: [Event!]! @belongsToMany
+
+    coreDemographic: CoreDemographic! @belongsTo
+
+    otherDemographics: [OtherDemographic!]! @belongsToMany
+}
+
+type Event {
+    id: ID!
+
+    createdAt: DateTime!
+
+    updatedAt: DateTime!
+
+    name: String!
+
+    start: DateTime!
+
+    end: DateTime!
+
+    people: [Person!]! @belongsToMany
+}
+
+type CoreDemographic {
+    id: ID!
+
+    createdAt: DateTime!
+
+    updatedAt: DateTime!
+
+    name: String!
+
+    description: String
+
+    people: [Person!]! @hasMany
+}
+
+type OtherDemographic {
+    id: ID!
+
+    createdAt: DateTime!
+
+    updatedAt: DateTime!
+
+    name: String!
+
+    description: String
+
+    people: [Person!]! @belongsToMany
+}
+
+type Series {
+    id: ID!
+
+    createdAt: DateTime!
+
+    updatedAt: DateTime!
+
+    name: String!
+
+    description: String
+
+    imageFileUrl: String
+
+    talks: [Talk!]! @hasMany
+
+    studies: [Study!]! @hasMany
+}
+
+type Talk {
+    id: ID!
+
+    createdAt: DateTime!
+
+    updatedAt: DateTime!
+
+    name: String!
+
+    description: String
+
+    audioFileUrl: String
+
+    series: Series! @belongsTo
+
+    speaker: Person! @belongsTo
+}
+
+type Study {
+    id: ID!
+
+    createdAt: DateTime!
+
+    updatedAt: DateTime!
+
+    name: String!
+
+    description: String
+
+    imageFileUrl: String
+
+    series: Series! @belongsTo
+
+    author: Person! @belongsTo
+}

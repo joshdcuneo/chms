@@ -20,15 +20,12 @@ class Talk extends TeamOwnedModel
      * @var array<int, string>
      */
     protected $fillable = [
+        'description',
         'name',
         'team_id',
-    ];
-
-    /**
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'audio_file' => 'json',
+        'series_id',
+        'speaker_id',
+        'audio_file_url',
     ];
 
     public function series(): BelongsTo
