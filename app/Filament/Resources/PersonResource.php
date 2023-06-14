@@ -38,14 +38,13 @@ class PersonResource extends Resource
                 Forms\Components\TextInput::make('phone')
                     ->tel()
                     ->maxLength(255),
-                Forms\Components\Select::make('coreDemographic')
+                Forms\Components\Select::make('core_demographic_id')
                     ->relationship('coreDemographic', 'name')
                     ->required()
                     ->preload(),
                 Forms\Components\Select::make('otherDemographics')
                     ->relationship('otherDemographics', 'name')
                     ->multiple()
-                    ->required()
                     ->preload(),
             ]);
     }
