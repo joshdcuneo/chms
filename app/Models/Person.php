@@ -25,7 +25,7 @@ class Person extends TeamOwnedModel
         'email',
         'phone',
         'team_id',
-        'demographic_id',
+        'core_demographic_id',
     ];
 
     /**

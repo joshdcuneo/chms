@@ -4,7 +4,6 @@ namespace App\Models\Concerns;
 
 use App\Models\Scopes\CurrentTeamScope;
 use App\Models\Team;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Symfony\Component\HttpFoundation\Response;
 

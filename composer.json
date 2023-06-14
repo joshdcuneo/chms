@@ -16,6 +16,7 @@
         "mll-lab/laravel-graphiql": "^3.0",
         "nuwave/lighthouse": "^6.10",
         "rlanvin/php-rrule": "^2.4",
+        "spatie/laravel-activitylog": "^4.7",
         "spatie/laravel-data": "^3.6"
     },
     "require-dev": {
