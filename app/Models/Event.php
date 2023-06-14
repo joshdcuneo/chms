@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Builders\EventBuilder;
 use App\Models\Concerns\TeamOwnedModel;
 use App\Models\Event\EventStatus;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,12 +36,23 @@ class Event extends TeamOwnedModel
         'end' => 'immutable_datetime',
     ];
 
+    public function newEloquentBuilder($query): EventBuilder
+    {
+        return new EventBuilder($query);
+    }
+
+    /**
+     * @return BelongsToMany<Person>
+     */
     public function people(): BelongsToMany
     {
         return $this->belongsToMany(Person::class)
             ->withTimestamps();
     }
 
+    /**
+     * @return Attribute<EventStatus, void>
+     */
     public function status(): Attribute
     {
         return new Attribute(fn() => $this->getStatus());
@@ -49,23 +61,15 @@ class Event extends TeamOwnedModel
     public function getStatus(): EventStatus
     {
         if ($this->start > now()) {
-            return EventStatus::Upcoming();
+            return EventStatus::Upcoming;
         }
 
         if ($this->end < now()) {
-            return EventStatus::Finished();
+            return EventStatus::Finished;
         }
 
-        return EventStatus::Ongoing();
+        return EventStatus::Ongoing;
     }
 
-    public function scopeStatus(Builder $query, EventStatus $status): Builder
-    {
-        return match ($status) {
-            EventStatus::Finished => $query->where('end', '<', now()),
-            EventStatus::Upcoming => $query->where('start', '>', now()),
-            EventStatus::Ongoing => $query->where('start', '<=', now())
-                ->andWhere('end', '>=', now())
-        };
-    }
+
 }

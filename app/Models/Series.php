@@ -26,11 +26,17 @@ class Series extends TeamOwnedModel
         'team_id',
     ];
 
+    /**
+     * @return HasMany<Talk>
+     */
     public function talks(): HasMany
     {
         return $this->hasMany(Talk::class);
     }
 
+    /**
+     * @return HasMany<Study>
+     */
     public function studies(): HasMany
     {
         return $this->hasMany(Study::class);

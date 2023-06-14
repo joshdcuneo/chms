@@ -28,11 +28,17 @@ class Study extends TeamOwnedModel
         'document_file_url',
     ];
 
+    /**
+     * @return BelongsTo<Series, self>
+     */
     public function series(): BelongsTo
     {
         return $this->belongsTo(Series::class);
     }
 
+    /**
+     * @return BelongsTo<Person, self>
+     */
     public function author(): BelongsTo
     {
         return $this->belongsTo(Person::class);

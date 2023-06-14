@@ -1,1 +1,11 @@
 - Store created_by_id on everything
+- GraphQL tests
+  - List tests
+  - Find tests
+- Filament tests
+  - View tests
+  - Create tests
+  - Edit tests
+  - Delete tests
+
+- Lower level testing of each feature for listing etc (filters for example) later

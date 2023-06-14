@@ -5,7 +5,7 @@ namespace App\Models\Concerns\Enum;
 trait HasOptions
 {
     /**
-     * @returns array<string, string>
+     * @return array<string, string>
      */
     public static function options(): array
     {

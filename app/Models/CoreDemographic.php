@@ -25,6 +25,9 @@ class CoreDemographic extends TeamOwnedModel
         'team_id',
     ];
 
+    /**
+     * @return HasMany<Person>
+     */
     public function people(): HasMany
     {
         return $this->hasMany(Person::class);

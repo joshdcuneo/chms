@@ -10,7 +10,7 @@ use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
 
 class DefaultResolver
 {
-    public function __invoke(mixed $parent, $args, GraphQLContext $context, ResolveInfo $resolveInfo): mixed
+    public function __invoke(mixed $parent, mixed $args, GraphQLContext $context, ResolveInfo $resolveInfo): mixed
     {
         $fieldName = $resolveInfo->fieldName;
         $snakeFieldName = Str::snake($fieldName);

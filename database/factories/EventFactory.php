@@ -29,4 +29,12 @@ class EventFactory extends Factory
             },
         ];
     }
+
+    public function upcoming(): self
+    {
+        return $this->state([
+            'start' => Date::now()->addDay(),
+            'end' => Date::now()->addDays(2),
+        ]);
+    }
 }

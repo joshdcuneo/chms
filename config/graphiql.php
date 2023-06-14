@@ -17,7 +17,6 @@ return [
         '/graphiql' => [
             'name' => 'graphiql',
             'middleware' => [
-                \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
                 'web',
                 'auth'
             ],

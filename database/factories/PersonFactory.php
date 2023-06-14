@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\CoreDemographic;
 use App\Models\Person;
-use App\Models\Scopes\CurrentTeamScope;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,10 +23,8 @@ class PersonFactory extends Factory
             'email' => $this->faker->unique()->email,
             'phone' => $this->faker->phoneNumber,
             'core_demographic_id' => function () {
-                return CoreDemographic::withoutGlobalScope(CurrentTeamScope::class)
-                    ->get()
-                    ->random()
-                    ->id;
+                $coreDemographics = CoreDemographic::get();
+                return $coreDemographics->isEmpty() ? CoreDemographic::factory()->create()->id : $coreDemographics->random()->id;
             }
         ];
     }

@@ -3,10 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\Person;
+use App\Models\Talk;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Talk>
+ * @extends Factory<Talk>
  */
 class TalkFactory extends Factory
 {
@@ -19,9 +20,7 @@ class TalkFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence(3),
-            'speaker_id' => function(array $attrs) {
-                return Person::factory()->create(['team_id' => $attrs['team_id']])->id;
-            },
+            'speaker_id' => Person::factory(),
             'audio_file_url' => $this->faker->url
         ];
     }

@@ -43,7 +43,7 @@ class Person extends TeamOwnedModel
     }
 
     /**
-     * @return BelongsToMany<CoreDemographic>
+     * @return BelongsToMany<OtherDemographic>
      */
     public function otherDemographics(): BelongsToMany
     {
@@ -52,7 +52,7 @@ class Person extends TeamOwnedModel
     }
 
     /**
-     * @return BelongsTo<CoreDemographic>
+     * @return BelongsTo<CoreDemographic, self>
      */
     public function coreDemographic(): BelongsTo
     {

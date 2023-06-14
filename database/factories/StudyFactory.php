@@ -3,10 +3,11 @@
 namespace Database\Factories;
 
 use App\Models\Person;
+use App\Models\Study;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Study>
+ * @extends Factory<Study>
  */
 class StudyFactory extends Factory
 {
@@ -19,9 +20,7 @@ class StudyFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence(3),
-            'author_id' => function(array $attrs) {
-                return Person::factory()->create(['team_id' => $attrs['team_id']])->id;
-            },
+            'author_id' => Person::factory(),
             'document_file_url' => $this->faker->url
         ];
     }

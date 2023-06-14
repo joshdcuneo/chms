@@ -25,6 +25,9 @@ class OtherDemographic extends TeamOwnedModel
         'team_id',
     ];
 
+    /**
+     * @return BelongsToMany<Person>
+     */
     public function people(): BelongsToMany
     {
         return $this->belongsToMany(Person::class)
